@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/products", require("./routes/products.routes"));
 app.use("/api/v1/users", require("./routes/users.routes"));
+app.use("/api/v1/commandes", require("./routes/commandes.routes"));
 
 // lancer le serveur
 app.listen(PORT, () => console.log("Le serveur à démarrer au port" + PORT));

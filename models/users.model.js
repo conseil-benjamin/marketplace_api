@@ -4,6 +4,7 @@ const clientSchema = mongoose.Schema({
   id: {
     type: String,
     required: true,
+    unique: true,
   },
   nom: {
     type: String,
@@ -13,10 +14,6 @@ const clientSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  age: {
-    type: Number,
-    required: true,
-  },
   adresses: {
     type: [String],
     required: true,
@@ -24,6 +21,7 @@ const clientSchema = mongoose.Schema({
   adresseEmail: {
     type: String,
     required: true,
+    unique: true,
   },
   mdp: {
     type: String,
@@ -31,37 +29,6 @@ const clientSchema = mongoose.Schema({
   },
   numeroTel: {
     type: String,
-    required: true,
-  },
-  statutClient: {
-    type: String,
-    required: true,
-  },
-  historiqueCommandes: {
-    type: [
-      {
-        date: {
-          type: String,
-          required: true,
-        },
-        contenuCommande: [
-          {
-            produit: {
-              type: String,
-              required: true,
-            },
-            prix: {
-              type: Number,
-              required: true,
-            },
-          },
-        ],
-        prixTotal: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
     required: true,
   },
 });
