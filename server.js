@@ -5,7 +5,6 @@ var cors = require("cors");
 const PORT = 5000;
 
 const app = express();
-//connexion à la DB
 connectDB();
 
 // Middleware qui permet de traiter les données de la request
