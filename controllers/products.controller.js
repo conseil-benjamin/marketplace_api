@@ -10,6 +10,23 @@ module.exports.getProducts = async (req, res) => {
   }
 };
 
+module.exports.getProduct = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Products.find({ id });
+
+    if (!product) {
+      res.status(404).json({ message: "Produit non trouvée" });
+      return;
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
 /*
 
 module.exports.getEasyWords = async (req, res) => {
