@@ -1,44 +1,38 @@
 const mongoose = require("mongoose");
 
-const clientSchema = mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  nom: {
+const adresseSchema = mongoose.Schema({
+  userId: {
     type: String,
     required: true,
   },
-  prenom: {
+  nomPersonne: {
     type: String,
     required: true,
   },
-  adresses: {
-    type: [String],
-    required: true,
-  },
-  adresseEmail: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  mdp: {
+  prenomPersonne: {
     type: String,
     required: true,
   },
-  numeroTel: {
+  adresse: {
     type: String,
     required: true,
   },
-  iconProfil: {
+  codePostal: {
     type: String,
-    required: false,
+    required: true,
   },
-  civilite: {
+  ville: {
+    type: String,
+    required: true,
+  },
+  complementAdresse: {
+    type: String,
+    default: "",
+  },
+  pays: {
     type: String,
     required: true,
   },
 });
 
-module.exports = mongoose.model("Users", clientSchema, "Users");
+module.exports = mongoose.model("Adresses", adresseSchema, "Adresses");

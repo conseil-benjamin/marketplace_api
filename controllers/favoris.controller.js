@@ -1,31 +1,21 @@
-const Commandes = require("../models/commande.model");
+const Favoris = require("../models/favoris.model");
 
-module.exports.getCommandes = async (req, res) => {
+module.exports.getFavoris = async (req, res) => {
   try {
-    const commandes = await Commandes.find({});
-    res.status(200).json(commandes);
-  } catch (error) {
-    res.status(500);
-    throw new Error(error.message);
-  }
-};
+    const idClient = req.params.idClient;
+    const favoris = await Favoris.find({ idClient });
 
-module.exports.getOneOrder = async (req, res) => {
-  try {
-    const numOrder = req.params.idCommande; // Utilisez req.params.idCommande pour obtenir la valeur de l'idCommande
-    const commande = await Commandes.findOne({ numOrder }); // Utilisez idCommande dans la requête
-
-    if (!commande) {
-      res.status(404).json({ message: "Commande non trouvée" });
+    if (!favoris) {
+      res.status(404).json({ message: "Favoris non trouvée" });
       return;
     }
-    res.status(200).json(commande);
+
+    res.status(200).json(favoris);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 
 /*
 
