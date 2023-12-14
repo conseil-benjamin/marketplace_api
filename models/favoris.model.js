@@ -17,6 +17,10 @@ const favorisSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  idProduct: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Favoris", favorisSchema, "Favoris");
