@@ -31,10 +31,6 @@ const clientSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  iconProfil: {
-    type: String,
-    required: false,
-  },
   civilite: {
     type: String,
     required: true,

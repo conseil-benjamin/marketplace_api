@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get("/:idClient", getFavoris);
 router.post("/insert", postFavori);
-router.post("/:idProduct", deleteFavori);
+router.delete("/delete/:idProduct", deleteFavori);
 
 module.exports = router;

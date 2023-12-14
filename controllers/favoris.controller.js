@@ -32,13 +32,12 @@ module.exports.postFavori = async (req, res) => {
 module.exports.deleteFavori = async (req, res) => {
   try {
     const idProduct = req.params.idClient;
-    const favori = await Favoris.deleteMany({ idProduct });
+    const favori = await Favoris.deleteOne({ idProduct });
 
     if (!favori) {
       res.status(404).json({ message: "Favori non supprimé" });
       return;
     }
-
     res.status(200).json(favori);
   } catch (error) {
     console.error(error);
