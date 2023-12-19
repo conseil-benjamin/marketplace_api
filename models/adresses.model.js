@@ -27,6 +27,7 @@ const adresseSchema = mongoose.Schema({
   },
   complementAdresse: {
     type: String,
+    required: false,
     default: "",
   },
   pays: {
