@@ -13,14 +13,6 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  light: {
-    type: Number,
-    required: true,
-  },
-  water: {
-    type: Number,
-    required: true,
-  },
   cover: {
     type: String,
     required: true,
@@ -35,4 +27,4 @@ const productSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Plants", productSchema, "Plants");
+module.exports = mongoose.model("Produits", productSchema, "Produits");
