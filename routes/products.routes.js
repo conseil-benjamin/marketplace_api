@@ -10,9 +10,9 @@ const {
 const router = express.Router();
 
 router.get("/", getProducts);
-router.get("/:id", getProduct);
 router.get("/bracelets", getBracelets);
 router.get("/accessoires", getAcessoires);
 router.get("/encens", getEncens);
 router.get("/boucles-oreilles", getBouclesOreilles);
+router.get("/:id", getProduct);
 module.exports = router;
