@@ -7,7 +7,6 @@ const PORT = 5000;
 const app = express();
 connectDB();
 
-// Middleware qui permet de traiter les données de la request
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
