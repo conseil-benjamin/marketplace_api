@@ -27,3 +27,20 @@ module.exports.register = async (req, res) => {
     res.status(500).json({ success: false, error: "Erreur serveur" });
   }
 };
+
+module.exports.getUser = async (req, res) => {
+  try {
+    const email = req.params.id;
+    const user = await UsersModel.find({ email });
+
+    if (!user) {
+      res.status(404).json({ message: error.message });
+      return;
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
