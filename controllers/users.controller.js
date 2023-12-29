@@ -31,7 +31,7 @@ module.exports.register = async (req, res) => {
 module.exports.getUser = async (req, res) => {
   try {
     const email = req.params.email;
-    const user = await UsersModel.find({ email });
+    const user = await UsersModel.find({ adresseEmail: email });
 
     if (!user) {
       res.status(404).json({ message: error.message });
