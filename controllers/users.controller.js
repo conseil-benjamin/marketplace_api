@@ -30,7 +30,7 @@ module.exports.register = async (req, res) => {
 
 module.exports.getUser = async (req, res) => {
   try {
-    const email = req.params.id;
+    const email = req.params.email;
     const user = await UsersModel.find({ email });
 
     if (!user) {
