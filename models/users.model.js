@@ -14,10 +14,6 @@ const clientSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  adresses: {
-    type: [String],
-    required: true,
-  },
   adresseEmail: {
     type: String,
     required: true,
