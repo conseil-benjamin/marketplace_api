@@ -19,13 +19,9 @@ module.exports.login = async (req, res) => {
       throw new Error("Invalid email or password");
     }
 
-    const token = jwt.sign(
-      {
-        id: user.id,
-      },
-      "jwtPrivateKey",
-      { expiresIn: "60m" }
-    );
+    const token = jwt.sign({
+      id: user.id,
+    });
 
     res.status(200).json(token);
   } catch (error) {
