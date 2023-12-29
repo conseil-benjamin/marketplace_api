@@ -14,8 +14,13 @@ module.exports.login = async (req, res) => {
       throw new Error("Invalid email or password");
     }
 
-    const isSamePassword = bcrypt.compare(password, user.mdp);
-    if (!isSamePassword) {
+    try {
+      const isSamePassword = await bcrypt.compare(password, user.mdp);
+      if (!isSamePassword) {
+        throw new Error("Invalid email or password");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la comparaison de hachage :", error);
       throw new Error("Invalid email or password");
     }
     const secretKey = crypto.randomBytes(64).toString("hex");
