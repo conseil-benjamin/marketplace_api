@@ -15,4 +15,5 @@ router.get("/accessoires", getAcessoires);
 router.get("/encens", getEncens);
 router.get("/boucles-oreilles", getBouclesOreilles);
 router.get("/:id", getProduct);
+//router.get("/:prixMinimum/:prixMaximum", getProductsByPrix)
 module.exports = router;
