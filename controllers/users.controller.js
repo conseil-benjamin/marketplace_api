@@ -1,10 +1,10 @@
 const UsersModel = require("../models/users.model");
 const bcrypt = require("bcrypt");
 
-module.exports.getUsers = async (req, res) => {
+module.exports.getUser = async (req, res) => {
   try {
-    const users = await UsersModel.find({});
-    res.status(200).json(users);
+    const user = await UsersModel.findOne();
+    res.status(200).json(user);
   } catch (error) {
     res.status(500);
     throw new Error(error.message);
@@ -28,7 +28,7 @@ module.exports.register = async (req, res) => {
   }
 };
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUserByEmail = async (req, res) => {
   try {
     const email = req.params.email;
     const user = await UsersModel.find({ adresseEmail: email });
