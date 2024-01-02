@@ -21,9 +21,9 @@ module.exports.getFavoris = async (req, res) => {
 module.exports.postFavori = async (req, res) => {
   try {
     const favori = req.body;
-    const token = favori.idClient;
-    const decoded = jwt.verify(token, "123");
-    favori.idClient = decoded.id;
+    const id = req.userId;
+    console.log(id);
+    favori.idClient = id;
     const result = await Favoris.insertMany(favori);
 
     res.json({ success: true, insertedCount: result.insertedCount });

@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 
 module.exports.getUser = async (req, res) => {
   try {
-    const user = await UsersModel.find({ id: req.userId });
+    const id = req.userId;
+    const user = await UsersModel.find({ id });
     res.status(200).json(user);
   } catch (error) {
     res.status(500);
