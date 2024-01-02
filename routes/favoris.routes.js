@@ -8,7 +8,7 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/:idClient", authMiddleware, getFavoris);
-router.post("/insert", postFavori);
+router.post("/insert", authMiddleware, postFavori);
 router.delete("/delete/:idProduct", deleteFavori);
 
 module.exports = router;
