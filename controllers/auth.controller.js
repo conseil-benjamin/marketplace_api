@@ -8,13 +8,12 @@ module.exports.login = async (req, res) => {
     const email = userInformations.email;
     const password = userInformations.password;
 
-    // Vérifiez d'abord si l'email est associé à un compte
     let user = await UsersModel.findOne({ adresseEmail: email });
     if (!user) {
       throw new Error("Invalid email or password");
     }
 
-    const isSamePassword = await bcrypt.compare(password, user.mdp); 
+    const isSamePassword = await bcrypt.compare(password, user.mdp);
     if (!isSamePassword) {
       throw new Error("Invalid email or password");
     }
@@ -23,7 +22,7 @@ module.exports.login = async (req, res) => {
       {
         id: user.id,
       },
-      process.env.CLE_SECRETE,
+      "123",
       { expiresIn: "7d" }
     );
 
