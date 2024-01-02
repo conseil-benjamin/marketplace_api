@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports.getFavoris = async (req, res) => {
   try {
-    const idClient = req.params.idClient;
+    const idClient = req.userId;
     const favoris = await Favoris.find({ idClient });
 
     if (!favoris) {
