@@ -4,7 +4,13 @@ const bcrypt = require("bcrypt");
 module.exports.getUser = async (req, res) => {
   try {
     const id = req.userId;
-    const user = await UsersModel.find({ id });
+    const user = await UsersModel.find({ id: id });
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur non trouvée" });
+      return;
+    }
+
     res.status(200).json(user);
   } catch (error) {
     res.status(500);
