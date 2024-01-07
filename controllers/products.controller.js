@@ -1,4 +1,6 @@
 const Products = require("../models/products.model");
+const { validationResult } = require("express-validator");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports.getProducts = async (req, res) => {
   try {
@@ -85,5 +87,38 @@ module.exports.getProduct = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports.getProductsByPrix = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // Sanitization
+    const min = sanitizeHtml(req.params.prixMinimum);
+    const max = sanitizeHtml(req.params.prixMaximum);
+    const categorie = sanitizeHtml(req.params.categorie);
+    let productsAllCategories = [];
+    let products = [];
+
+    if (categorie === "tout") {
+      productsAllCategories = await Products.find({
+        price: { $gte: min, $lte: max },
+      });
+      res.status(200).json(productsAllCategories || []);
+    } else {
+      products = await Products.find({
+        price: { $gte: min, $lte: max },
+        category: categorie,
+      });
+      res.status(200).json(products || []);
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: `Error fetching products: ${error.message}` });
   }
 };

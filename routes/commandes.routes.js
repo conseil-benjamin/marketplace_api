@@ -3,9 +3,10 @@ const {
   getCommandes,
   getOneOrder,
 } = require("../controllers/commandes.controller");
+const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.get("/", getCommandes);
+router.get("/", authMiddleware, getCommandes);
 router.get("/:numOrder", getOneOrder);
 
 module.exports = router;
