@@ -4,5 +4,6 @@ const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", authMiddleware, getAdresses);
+//router.get("/:idAdresse", authMiddleware, getAdresse);
 
 module.exports = router;
