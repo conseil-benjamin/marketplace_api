@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv").config();
-var cors = require("cors");
+const cors = require("cors");
 const PORT = 5000;
 
 const app = express();
@@ -18,4 +18,4 @@ app.use("/api/v1/commandes", require("./routes/commandes.routes"));
 app.use("/api/v1/adresses", require("./routes/adresses.routes"));
 app.use("/api/v1/favoris", require("./routes/favoris.routes"));
 // lancer le serveur
-app.listen(PORT, () => console.log("Le serveur à démarrer au port" + PORT));
+app.listen(PORT, () => console.log("Le serveur à démarrer au port " + PORT));
