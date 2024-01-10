@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 module.exports.getUser = async (req, res) => {
   try {
     const id = req.userId;
-    const user = await UsersModel.find({ id: id });
+    const user = await UsersModel.findOne({ id: id });
 
     if (!user) {
       res.status(404).json({ message: "Utilisateur non trouvée" });
@@ -22,7 +22,7 @@ module.exports.register = async (req, res) => {
   try {
     let user = req.body;
 
-    const saltRounds = 10; // Le coût du hachage (plus le nombre est élevé, plus le hachage est sécurisé mais lent)
+    const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(user.mdp, salt);
     user.mdp = hashedPassword;
