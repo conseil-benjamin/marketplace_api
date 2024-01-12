@@ -16,7 +16,7 @@ module.exports.getBracelets = async (req, res) => {
     const bracelets = await Products.find({ category: "bracelet" });
 
     if (!bracelets) {
-      res.status(404).json({ message: error.message });
+      res.status(404).json("bracelets not found");
       return;
     }
     res.status(200).json(bracelets);
@@ -31,7 +31,7 @@ module.exports.getAcessoires = async (req, res) => {
     const accessoires = await Products.find({ category: "accessoire" });
 
     if (!accessoires) {
-      res.status(404).json({ message: error.message });
+      res.status(404).json("accessoires not found");
       return;
     }
     res.status(200).json(accessoires);
@@ -46,7 +46,7 @@ module.exports.getEncens = async (req, res) => {
     const encens = await Products.find({ category: "encen" });
 
     if (!encens) {
-      res.status(404).json({ message: error.message });
+      res.status(404).json("encens not found");
       return;
     }
     res.status(200).json(encens);
@@ -69,7 +69,7 @@ module.exports.getBouclesOreilles = async (req, res) => {
     res.status(200).json(bouclesOreilles);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json("bouclesOreilles not found");
   }
 };
 
@@ -86,7 +86,7 @@ module.exports.getProduct = async (req, res) => {
     res.status(200).json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json("product not found");
   }
 };
 
