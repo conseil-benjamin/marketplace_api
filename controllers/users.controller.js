@@ -38,16 +38,15 @@ module.exports.register = async (req, res) => {
 module.exports.getUserByEmail = async (req, res) => {
   try {
     const email = req.params.email;
-    const user = await UsersModel.find({ adresseEmail: email });
+    const user = await UsersModel.findOne({ adresseEmail: email });
 
     if (!user) {
-      res.status(404).json({ message: error.message });
+      res.status(404).json("No user found");
       return;
     }
 
     res.status(200).json(user);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

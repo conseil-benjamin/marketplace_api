@@ -19,11 +19,11 @@ module.exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      {
-        id: user.id,
-      },
-      "123",
-      { expiresIn: "7d" }
+        {
+          id: user.id,
+        },
+        "123",
+        { expiresIn: "7d" }
     );
 
     res.status(200).json({ token, user });

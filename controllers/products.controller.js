@@ -16,7 +16,7 @@ module.exports.getBracelets = async (req, res) => {
     const bracelets = await Products.find({ category: "bracelet" });
 
     if (!bracelets) {
-      res.status(404).json("bracelets not found");
+      res.status(404).json({ message: error.message });
       return;
     }
     res.status(200).json(bracelets);
@@ -31,7 +31,7 @@ module.exports.getAcessoires = async (req, res) => {
     const accessoires = await Products.find({ category: "accessoire" });
 
     if (!accessoires) {
-      res.status(404).json("accessoires not found");
+      res.status(404).json({ message: error.message });
       return;
     }
     res.status(200).json(accessoires);
@@ -46,7 +46,7 @@ module.exports.getEncens = async (req, res) => {
     const encens = await Products.find({ category: "encen" });
 
     if (!encens) {
-      res.status(404).json("encens not found");
+      res.status(404).json({ message: error.message });
       return;
     }
     res.status(200).json(encens);
@@ -69,7 +69,7 @@ module.exports.getBouclesOreilles = async (req, res) => {
     res.status(200).json(bouclesOreilles);
   } catch (error) {
     console.error(error);
-    res.status(500).json("bouclesOreilles not found");
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -86,7 +86,7 @@ module.exports.getProduct = async (req, res) => {
     res.status(200).json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json("product not found");
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -118,7 +118,50 @@ module.exports.getProductsByPrix = async (req, res) => {
   } catch (error) {
     console.error(error);
     res
-      .status(500)
-      .json({ message: `Error fetching products: ${error.message}` });
+        .status(500)
+        .json({ message: `Error fetching products: ${error.message}` });
+  }
+};
+
+module.exports.getProductsByPierre = async (req, res) => {
+  try {
+    let pierres = req.body.pierres;
+    let category = req.body.category;
+    console.log(category);
+    console.log(pierres);
+
+    const products = await Products.find({
+      pierres: { $in: pierres },
+      category: category,
+    });
+
+    console.log(products);
+    if (!products) {
+      res.status(404).json("Aucun produit trouvé avec ses pierres");
+      return;
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.getProductsFromOneCategory = async (req, res) => {
+  try {
+    let category = req.body;
+    console.log(category);
+
+    const products = await Products.find({
+      category: category,
+    });
+
+    console.log(products);
+    if (!products) {
+      res.status(404).json("Aucun produit trouvé avec cette catégorie");
+      return;
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
