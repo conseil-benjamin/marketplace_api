@@ -25,6 +25,10 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  pierres: {
+    type: [String],
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Produits", productSchema, "Produits");
