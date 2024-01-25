@@ -7,7 +7,7 @@ module.exports.getUser = async (req, res) => {
     const user = await UsersModel.findOne({ id: id });
 
     if (!user) {
-      res.status(404).json({ message: "Utilisateur non trouvée" });
+      res.status(404).json({ message: "Utilisateur non trouvé" });
       return;
     }
 
