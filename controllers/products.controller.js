@@ -148,7 +148,7 @@ module.exports.getProductsByPierre = async (req, res) => {
 
 module.exports.getProductsFromOneCategory = async (req, res) => {
   try {
-    let category = req.body;
+    let category = req.body.activeCategory;
     console.log(category);
 
     const products = await Products.find({
