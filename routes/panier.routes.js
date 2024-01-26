@@ -8,5 +8,6 @@ const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", authMiddleware, getPanier);
-router.get("/insert", authMiddleware, insertPanier);
+//router.post("/insert", authMiddleware, insertPanier);
+//router.delete("/delete", authMiddleware, deleteProductFromPanier);
 module.exports = router;
