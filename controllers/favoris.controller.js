@@ -43,7 +43,9 @@ module.exports.deleteFavori = async (req, res) => {
       res.status(404).json("favori non supprimé");
       return;
     }
-    res.status(200).json(favori);
+    const favorisMisAjour = await Favoris.find({ idClient });
+
+    res.status(200).json(favorisMisAjour);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur" });

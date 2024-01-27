@@ -9,33 +9,25 @@ const panierSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    prixArticle: {
-        type: Number,
-        required: true,
-    },
-    prixTotal: {
-        type: String,
-        required: true,
-    },
     contenuPanier: [
         {
             cover:{
                 type: String,
                 required: true,
             },
-            prix:{
+            price:{
                 type: Number,
                 required: true,
             },
-            nombre:{
+            amount:{
                 type: Number,
                 required: true,
             },
-            nom:{
+            name:{
                 type: String,
                 required: true,
             },
-            id_product:{
+            idProduct:{
                 type: String,
                 required: true,
             }
