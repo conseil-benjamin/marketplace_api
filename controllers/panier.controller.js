@@ -39,3 +39,27 @@ module.exports.insertPanier = async (req, res) => {
         res.status(500).json({ success: false, error: "Erreur serveur" });
     }
 };
+
+module.exports.deleteProductFromPanier = async (req, res) => {
+    try {
+        const idClient = req.userId;
+        const index = req.body.index;
+        console.log(index);
+        const panier = await Paniers.findOne({ numeroClient: idClient });
+        console.log(panier.contenuPanier);
+
+        if (!panier) {
+            res.status(404).json("Aucun panier appartenant à ce compte.");
+            return;
+        }
+        panier.contenuPanier.splice(index,1);
+        const result = await panier.save();
+        const panierAjour = await Paniers.findOne({ numeroClient: idClient });
+
+        console.log(panierAjour.contenuPanier);
+        res.status(200).json({ contenuPanier: panierAjour.contenuPanier });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
