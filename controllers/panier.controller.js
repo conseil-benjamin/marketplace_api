@@ -31,8 +31,9 @@ module.exports.insertPanier = async (req, res) => {
             panier.contenuPanier.push(produit);
         }
 
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
         const result = await panier.save();
-
         res.json({ success: true, panier: result });
     } catch (error) {
         console.error("Erreur lors de l'insertion des données:", error);
@@ -45,7 +46,7 @@ module.exports.deleteProductFromPanier = async (req, res) => {
         const idClient = req.userId;
         const index = req.body.index;
         console.log(index);
-        const panier = await Paniers.findOne({ numeroClient: idClient });
+        let panier = await Paniers.findOne({ numeroClient: idClient });
         console.log(panier.contenuPanier);
 
         if (!panier) {
@@ -53,13 +54,50 @@ module.exports.deleteProductFromPanier = async (req, res) => {
             return;
         }
         panier.contenuPanier.splice(index,1);
-        const result = await panier.save();
-        const panierAjour = await Paniers.findOne({ numeroClient: idClient });
 
-        console.log(panierAjour.contenuPanier);
-        res.status(200).json({ contenuPanier: panierAjour.contenuPanier });
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        panier = await panier.save();
+        res.status(200).json({ contenuPanier: panier.contenuPanier });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
+
+module.exports.updatePanier = async (req, res) => {
+    try {
+        const idClient = req.userId;
+        const newAmount = req.body.panierInfos.amount;
+        const idProduct = req.body.panierInfos.idProduct;
+        console.log("--------------------------------------" + newAmount + " --" + idProduct);
+        let panier = await Paniers.findOne({ numeroClient: idClient });
+        console.log(panier.contenuPanier);
+
+        if (!panier) {
+            res.status(404).json("Aucun panier appartenant à ce compte.");
+            return;
+        }
+        // mise à jour du nombre pour un produit
+        const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === idProduct);
+        panier.contenuPanier[productIndex].amount = newAmount;
+
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        panier = await panier.save();
+        res.status(200).json({ contenuPanier: panier.contenuPanier });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+
+function calculTotal(panier){
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + " " + panier)
+    let totalPanierClient = 0;
+    for (let product of panier.contenuPanier){
+        totalPanierClient += product.amount * product.price;
+    }
+    return totalPanierClient;
+}
