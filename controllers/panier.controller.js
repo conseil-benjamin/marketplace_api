@@ -1,5 +1,4 @@
 const Paniers = require("../models/panier.model");
-const Favoris = require("../models/favoris.model");
 
 module.exports.getPanier = async (req, res) => {
     try {
@@ -20,20 +19,27 @@ module.exports.getPanier = async (req, res) => {
 module.exports.insertPanier = async (req, res) => {
     try {
         const produit = req.body.panierInfos;
-        console.log(produit);
         const id = req.userId;
         const timestamp = new Date().getTime();
         const uniqueId = `${timestamp}`;
+        let newAmount = 1;
         let panier = await Paniers.findOne({ numeroClient: id });
         if (!panier) {
             panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: produit });
-        } else {
+        }  else if (panier.contenuPanier.some(item => item.idProduct === produit.idProduct)) {
+            console.log("----------------------------------Produit déjà dans le panier---------------------------------");
+            const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === produit.idProduct);
+            const amount = panier.contenuPanier[productIndex].amount;
+            newAmount = amount + 1;
+            panier.contenuPanier[productIndex].amount = newAmount;
+        } else{
             panier.contenuPanier.push(produit);
         }
 
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
         const result = await panier.save();
-
-        res.json({ success: true, panier: result });
+        res.json({ newAmount: newAmount, contenuPanier: result.contenuPanier});
     } catch (error) {
         console.error("Erreur lors de l'insertion des données:", error);
         res.status(500).json({ success: false, error: "Erreur serveur" });
@@ -45,7 +51,7 @@ module.exports.deleteProductFromPanier = async (req, res) => {
         const idClient = req.userId;
         const index = req.body.index;
         console.log(index);
-        const panier = await Paniers.findOne({ numeroClient: idClient });
+        let panier = await Paniers.findOne({ numeroClient: idClient });
         console.log(panier.contenuPanier);
 
         if (!panier) {
@@ -53,13 +59,82 @@ module.exports.deleteProductFromPanier = async (req, res) => {
             return;
         }
         panier.contenuPanier.splice(index,1);
-        const result = await panier.save();
-        const panierAjour = await Paniers.findOne({ numeroClient: idClient });
 
-        console.log(panierAjour.contenuPanier);
-        res.status(200).json({ contenuPanier: panierAjour.contenuPanier });
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        panier = await panier.save();
+        res.status(200).json({ contenuPanier: panier.contenuPanier });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
+
+module.exports.updatePanier = async (req, res) => {
+    try {
+        const idClient = req.userId;
+        const newAmount = req.body.panierInfos.amount;
+        const idProduct = req.body.panierInfos.idProduct;
+        console.log("--------------------------------------" + newAmount + " --" + idProduct);
+        let panier = await Paniers.findOne({ numeroClient: idClient });
+        console.log(panier.contenuPanier);
+
+        if (!panier) {
+            res.status(404).json("Aucun panier appartenant à ce compte.");
+            return;
+        }
+        // mise à jour du nombre pour un produit
+        const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === idProduct);
+        panier.contenuPanier[productIndex].amount = newAmount;
+
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        panier = await panier.save();
+        res.status(200).json({ contenuPanier: panier.contenuPanier });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+
+module.exports.insertProductsFromLocaleStorage = async (req, res) => {
+    try {
+        const products = req.body.panierInfos;
+        const id = req.userId;
+        let newAmount = 1;
+        let panier = await Paniers.findOne({ numeroClient: id });
+        if (!panier) {
+            const timestamp = new Date().getTime();
+            const uniqueId = `${timestamp}`;
+            panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: products });
+        }
+        for (let product of products){
+            if (panier.contenuPanier.some(item => item.idProduct === product.idProduct)) {
+                console.log("----------------------------------Produit déjà dans le panier---------------------------------");
+                const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === product.idProduct);
+                const amount = panier.contenuPanier[productIndex].amount;
+                newAmount = amount + 1;
+                panier.contenuPanier[productIndex].amount = newAmount;
+            } else{
+                panier.contenuPanier.push(product);
+            }
+        }
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        const result = await panier.save();
+        res.json({ newAmount: newAmount, contenuPanier: result.contenuPanier});
+    } catch (error) {
+        console.error("Erreur lors de l'insertion des données:", error);
+        res.status(500).json({ success: false, error: "Erreur serveur" });
+    }
+};
+
+function calculTotal(panier){
+    let totalPanierClient = 0;
+    for (let product of panier.contenuPanier){
+        totalPanierClient += product.amount * product.price;
+    }
+    return totalPanierClient;
+}
+

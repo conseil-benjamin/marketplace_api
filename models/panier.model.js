@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {Double} = require("mongodb");
 
 const panierSchema = mongoose.Schema({
     numeroPanier: {
@@ -32,7 +33,11 @@ const panierSchema = mongoose.Schema({
                 required: true,
             }
         }
-    ]
+    ],
+    total:{
+        type: Number,
+        required: true,
+    }
 });
 
 module.exports = mongoose.model("Panier", panierSchema, "Panier");
