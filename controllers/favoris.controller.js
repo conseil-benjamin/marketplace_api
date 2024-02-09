@@ -22,7 +22,6 @@ module.exports.postFavori = async (req, res) => {
   try {
     const favori = req.body;
     const id = req.userId;
-    console.log(id);
     favori.idClient = id;
     const result = await Favoris.insertMany(favori);
 
@@ -56,7 +55,6 @@ module.exports.getStatusFavori = async (req, res) => {
   try {
     const idProduct = req.body.idProduct;
     const idClient = req.userId;
-    console.log("Id produit : " + idProduct + "Id client : " + idClient);
     const favori = await Favoris.find({ idProduct: idProduct, idClient: idClient });
 
     if (!favori) {
@@ -64,7 +62,6 @@ module.exports.getStatusFavori = async (req, res) => {
       return;
     }
     res.status(200).json(favori);
-    console.log(favori);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
   }

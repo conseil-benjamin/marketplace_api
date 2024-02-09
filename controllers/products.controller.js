@@ -127,15 +127,12 @@ module.exports.getProductsByPierre = async (req, res) => {
   try {
     let pierres = req.body.pierres;
     let category = req.body.category;
-    console.log(category);
-    console.log(pierres);
 
     const products = await Products.find({
       pierres: { $in: pierres },
       category: category,
     });
 
-    console.log(products);
     if (!products) {
       res.status(404).json("Aucun produit trouvé avec ses pierres");
       return;
@@ -149,13 +146,11 @@ module.exports.getProductsByPierre = async (req, res) => {
 module.exports.getProductsFromOneCategory = async (req, res) => {
   try {
     let category = req.body.activeCategory;
-    console.log(category);
 
     const products = await Products.find({
       category: category,
     });
 
-    console.log(products);
     if (!products) {
       res.status(404).json("Aucun produit trouvé avec cette catégorie");
       return;

@@ -8,15 +8,12 @@ const authMiddleware = (req, res, next) => {
       .status(401)
       .json({ message: "Accès non autorisé. Token manquant." });
   }
-  console.log(token);
 
   try {
-    console.log(token);
     const decoded = jwt.verify(token, "123");
     req.userId = decoded.id;
     next();
   } catch (error) {
-    console.log(token);
 
     console.error("Erreur de vérification du token:", error);
     return res

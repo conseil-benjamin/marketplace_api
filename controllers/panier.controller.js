@@ -27,7 +27,6 @@ module.exports.insertPanier = async (req, res) => {
         if (!panier) {
             panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: produit });
         }  else if (panier.contenuPanier.some(item => item.idProduct === produit.idProduct)) {
-            console.log("----------------------------------Produit déjà dans le panier---------------------------------");
             const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === produit.idProduct);
             const amount = panier.contenuPanier[productIndex].amount;
             newAmount = amount + 1;
@@ -50,9 +49,7 @@ module.exports.deleteProductFromPanier = async (req, res) => {
     try {
         const idClient = req.userId;
         const index = req.body.index;
-        console.log(index);
         let panier = await Paniers.findOne({ numeroClient: idClient });
-        console.log(panier.contenuPanier);
 
         if (!panier) {
             res.status(404).json("Aucun panier appartenant à ce compte.");
@@ -76,9 +73,7 @@ module.exports.updatePanier = async (req, res) => {
         const idClient = req.userId;
         const newAmount = req.body.panierInfos.amount;
         const idProduct = req.body.panierInfos.idProduct;
-        console.log("--------------------------------------" + newAmount + " --" + idProduct);
         let panier = await Paniers.findOne({ numeroClient: idClient });
-        console.log(panier.contenuPanier);
 
         if (!panier) {
             res.status(404).json("Aucun panier appartenant à ce compte.");
@@ -100,7 +95,8 @@ module.exports.updatePanier = async (req, res) => {
 
 module.exports.insertProductsFromLocaleStorage = async (req, res) => {
     try {
-        const products = req.body.panierInfos;
+        const products = req.body.panierUpdated;
+        console.log("---------------------------" + products);
         const id = req.userId;
         let newAmount = 1;
         let panier = await Paniers.findOne({ numeroClient: id });
