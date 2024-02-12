@@ -29,6 +29,27 @@ const commandeSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  nbArticles: {
+    type: Number,
+    required: true,
+  },
+  adresseLivraison: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Adresses",
+    required: true,
+  },
+  typeLivraison: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  numeroSuivieMondialRelay: {
+    type: String,
+    required: false,
+  }
 });
 
 module.exports = mongoose.model("Commandes", commandeSchema, "Commandes");

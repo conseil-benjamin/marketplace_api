@@ -26,6 +26,7 @@ module.exports.getOneOrder = async (req, res) => {
       res.status(404).json({ message: "Commande non trouvée" });
       return;
     }
+    console.log(commande);
     res.status(200).json(commande);
   } catch (error) {
     console.error(error);

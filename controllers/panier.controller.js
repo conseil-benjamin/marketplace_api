@@ -95,6 +95,7 @@ module.exports.updatePanier = async (req, res) => {
 
 module.exports.insertProductsFromLocaleStorage = async (req, res) => {
     try {
+        console.log("dzdzqdzqdzqdqdqdzqdqzdqzdqzdqzdqzdqzdzqdzqdqzdzqdzqdqzdq");
         const products = req.body.panierUpdated;
         console.log("---------------------------" + products);
         const id = req.userId;
