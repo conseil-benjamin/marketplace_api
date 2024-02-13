@@ -16,3 +16,20 @@ module.exports.getAdresses = async (req, res) => {
     throw new Error(error.message);
   }
 };
+
+module.exports.getAdresseByObjectId = async (req, res) => {
+  try {
+    const adresse = await Adresses.findById({ _id: req.params.idAdresse});
+
+    if (!adresses) {
+      res.status(404).json({ message: "Adresses non trouvée" });
+      return;
+    }
+
+    res.status(200).json(adresse);
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};
+

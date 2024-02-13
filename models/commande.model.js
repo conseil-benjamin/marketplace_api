@@ -49,7 +49,11 @@ const commandeSchema = mongoose.Schema({
   numeroSuivieMondialRelay: {
     type: String,
     required: false,
-  }
+  },
+  fraisLivraison: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Commandes", commandeSchema, "Commandes");
