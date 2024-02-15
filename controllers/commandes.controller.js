@@ -19,8 +19,8 @@ module.exports.getCommandes = async (req, res) => {
 
 module.exports.getOneOrder = async (req, res) => {
   try {
-    const numOrder = req.params.idCommande; // Utilisez req.params.idCommande pour obtenir la valeur de l'idCommande
-    const commande = await Commandes.findOne({ numOrder }); // Utilisez idCommande dans la requête
+    const idCommande = req.params.idCommande;
+    const commande = await Commandes.findOne({ idCommande: idCommande });
 
     if (!commande) {
       res.status(404).json({ message: "Commande non trouvée" });
