@@ -83,7 +83,7 @@ module.exports.forgotPassword = async (req, res) => {
      **/
     const timestamp = new Date().getTime();
     user.tokenResetMdp = timestamp;
-    user.validiteTokenResetMdp = new Date(timestamp + 36000000);
+    user.validiteTokenResetMdp = new Date(timestamp + 3600);
     const userUpdated = user.save();
     console.log(userUpdated);
 
@@ -142,7 +142,7 @@ module.exports.tokenIsValid = async (req, res) => {
     /**
      * !! problème vérification token
      */
-    let token = req.param.token;
+    let token = req.params.token;
     const result = await UsersModel.findOne({ tokenResetMdp: token });
     console.log(result);
     if (!result) {
