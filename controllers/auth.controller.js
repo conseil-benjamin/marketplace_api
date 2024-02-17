@@ -82,8 +82,9 @@ module.exports.forgotPassword = async (req, res) => {
      * TODO : envoyer un email de récupération de mot de passe avec un token valide 1h
      **/
     const timestamp = new Date().getTime();
+    console.log(timestamp)
     user.tokenResetMdp = timestamp;
-    user.validiteTokenResetMdp = new Date(timestamp + 3600);
+    user.validiteTokenResetMdp = new Date(timestamp + 2 * 60 * 60 * 1000); // 1h de validité
     const userUpdated = user.save();
     console.log(userUpdated);
 
@@ -93,7 +94,7 @@ module.exports.forgotPassword = async (req, res) => {
       from: process.env.USER_NODE_MAILER,
       to: emailClient,
       subject: "Anne'so Naturelle | Réinitialisation de votre mot de passe",
-      html: "<p>Vous recevez cette email car quelqu''un à utiliser votre adresse email pour réinitialiser le comte lié. Si cela vient bien de vous, vous trouverez en dessous un bouton vous permettant de réinitialiser votre mot de passe.</p>" +
+      html: "<img src='https://res.cloudinary.com/dc1p20eb2/image/upload/v1700322497/samples/people/jazz.jpg' width='200' height='200'><p>Vous recevez cette email car quelqu''un à utiliser votre adresse email pour réinitialiser le comte lié. Si cela vient bien de vous, vous trouverez en dessous un bouton vous permettant de réinitialiser votre mot de passe. Le lien est valide pour une durée de 1h. Après cela vous devrez refaire une demande de réinitialisation de mot de passe.</p>" +
           `<a href="http://localhost:3000/auth/reset-password/${user.tokenResetMdp}" style="background-color: #4CAF50; color: white; padding: 14px 20px; text-align: center; text-decoration: none; display: inline-block;">Réinitialiser mon mot de passe</a>`
     }
 
@@ -106,32 +107,6 @@ module.exports.forgotPassword = async (req, res) => {
       }
     })
 
-     /** TODO : update dans la bdd le token de récupération de l'user et sa durée
-     * TODO : côté web si la date actuelle est supérieur à la date de validité du jeton alors on refuse de changer le mot de passe
-     * TODO : côté web si une demande de réinitialisation avait déjà été effectuer et qu'on souhaite en refaire une via le lien
-     * * mot de passe oublié, on supprime le token en bdd et sa durée de validation et on crée un autre.
-     * TODO : faire une autre route pour mettre à jour le nouveau mot de passe et
-     * TODO : le changer dans la bdd
-     * TODO : donner un token jwt pour la connexion
-     */
-
-    /**
-     *     const saltRounds = 10;
-     *     const salt = bcrypt.genSaltSync(saltRounds);
-     *     user.mdp = bcrypt.hashSync(user.mdp, salt);
-     *     const result = await UsersModel.insertMany(user);
-     *
-     *     if (result.insertCount === 0) {
-     *       throw new Error("Client non inséré");
-     *     }
-     *     const token = jwt.sign(
-     *         {
-     *           id: user.id,
-     *         },
-     *         process.env.CLE_SECRETE,
-     *         { expiresIn: "7d" }
-     *     );
-     */
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -139,12 +114,9 @@ module.exports.forgotPassword = async (req, res) => {
 
 module.exports.tokenIsValid = async (req, res) => {
   try {
-    /**
-     * !! problème vérification token
-     */
     let token = req.params.token;
     const result = await UsersModel.findOne({ tokenResetMdp: token });
-    console.log(result);
+    console.log("Client : " + result);
     if (!result) {
       throw new Error("Token introuvable");
     }
@@ -155,6 +127,28 @@ module.exports.tokenIsValid = async (req, res) => {
     }
 
     res.status(200).json({ message: "Token valide" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.resetPassword = async (req, res) => {
+  try {
+    let token = req.params.token;
+    let newPassword = req.body.nouveauMotDePasse;
+    const user = await UsersModel.findOne({ tokenResetMdp: token });
+    if (!user) {
+      throw new Error("Token introuvable");
+    }
+
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    user.mdp = bcrypt.hashSync(newPassword, salt);
+    user.tokenResetMdp = '';
+    user.save();
+    console.log("User updated after password update" + user);
+
+    res.status(200).json();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
