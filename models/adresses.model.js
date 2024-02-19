@@ -34,6 +34,10 @@ const adresseSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  numTel: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Adresses", adresseSchema, "Adresses");
