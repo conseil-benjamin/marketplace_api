@@ -20,9 +20,11 @@ module.exports.getAdresses = async (req, res) => {
 
 module.exports.getAdresseByObjectId = async (req, res) => {
   try {
-    const adresse = await Adresses.findById({ _id: req.params.idAdresse});
+    const adresseId = req.params.adresseId;
+    console.log(adresseId)
+    const adresse = await Adresses.findById({ _id: adresseId});
 
-    if (!adresses) {
+    if (!adresse) {
       res.status(404).json({ message: "Adresses non trouvée" });
       return;
     }
@@ -44,13 +46,35 @@ module.exports.insertAdresse = async (req, res) => {
     let insertedAdresse = await Adresses.findById(result._id);
     console.log(insertedAdresse);
     if (insertedAdresse) {
-      res.status(200);
+      res.status(200).json();
       console.log("L'adresse a été insérée avec succès.");
     } else {
-      res.status(404);
+      res.status(404).json();
       console.log("L'adresse n'a pas été insérée.");
     }
 
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};
+
+module.exports.deleteAdresse = async (req, res) => {
+  try {
+    const idAdresse = req.body.idAdresse;
+    const idClient = req.userId;
+    console.log(idAdresse)
+    const result = await Adresses.deleteOne({ _id: idAdresse });
+    const deleteAdress = await Adresses.findById({_id: idAdresse});
+    if (!deleteAdress) {
+      console.log("L'adresse a été supprimé avec succès.");
+    } else {
+      res.status(404).json();
+      console.log("L'adresse n'a pas été supprimé.");
+    }
+
+    const adressesAfterDelete = await Adresses.find({ userId: idClient });
+    res.status(200).json(adressesAfterDelete);
   } catch (error) {
     res.status(500);
     throw new Error(error.message);
