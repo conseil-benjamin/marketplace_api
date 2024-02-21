@@ -132,7 +132,7 @@ module.exports.tokenIsValid = async (req, res) => {
   }
 };
 
-module.exports.resetPassword = async (req, res) => {
+module.exports.resetPasswordFromEmail = async (req, res) => {
   try {
     let token = req.params.token;
     let newPassword = req.body.nouveauMotDePasse;
@@ -153,3 +153,4 @@ module.exports.resetPassword = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

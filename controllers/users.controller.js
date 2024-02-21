@@ -50,3 +50,48 @@ module.exports.getUserByEmail = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+module.exports.resetPassword = async (req, res) => {
+  try {
+    const id = req.userId;
+    let newPassword = req.body.newPassword;
+    const user = await UsersModel.findOne({ id: id });
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    user.mdp = bcrypt.hashSync(newPassword, salt);
+    user.save();
+    console.log("User updated after password update" + user);
+
+    res.status(200).json();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.getUserPasswordClear = async (req, res) => {
+  try {
+    const id = req.userId;
+    const motDePasseActuel = req.params.password;
+    const user = await UsersModel.findOne({ id: id });
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur non trouvé" });
+      return;
+    }
+
+    const isSamePassword = await bcrypt.compare(motDePasseActuel, user.mdp);
+    if (!isSamePassword){
+      res.status(400).json({message: "Le mot de passe ne correspond pas."})
+    }
+
+    res.status(200).json();
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};
+
