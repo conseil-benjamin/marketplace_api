@@ -19,5 +19,9 @@ app.use("/api/v1/adresses", require("./routes/adresses.routes"));
 app.use("/api/v1/favoris", require("./routes/favoris.routes"));
 app.use("/api/v1/panier", require("./routes/panier.routes"));
 app.use("/api/v1/mail", require("./routes/email.routes"));
+app.use("/api/v1/codePromo", require("./routes/codePromo.routes"));
 // lancer le serveur
 app.listen(PORT, () => console.log("Le serveur à démarrer au port " + PORT));
+setInterval(() => {
+    console.log(Date.now());
+}, 2 * 60 * 1000); // 2 minutes

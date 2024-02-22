@@ -5,7 +5,8 @@ const {
     insertPanier,
     deleteProductFromPanier,
     updatePanier,
-    insertProductsFromLocaleStorage
+    insertProductsFromLocaleStorage,
+    applyPromoCode
 } = require("../controllers/panier.controller");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
