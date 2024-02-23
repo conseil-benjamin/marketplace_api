@@ -95,3 +95,30 @@ module.exports.getUserPasswordClear = async (req, res) => {
   }
 };
 
+module.exports.patchUserInformations = async (req, res) => {
+  try {
+    console.log("Patch user informations");
+    const id = req.userId;
+    const user = req.body;
+    console.log(user);
+    console.log(id)
+    const result = await UsersModel.findOne({ id: id });
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur non trouvé" });
+      return;
+    }
+    result.prenom = user.prenom;
+    result.nom = user.nom;
+    result.numeroTel = user.numeroTel;
+    result.adresseEmail = user.adresseEmail;
+    result.civilite = user.civilite;
+    const userAfterUpdate = result.save();
+
+    console.log(userAfterUpdate);
+    res.status(200).json();
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};
