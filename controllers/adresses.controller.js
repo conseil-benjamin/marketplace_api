@@ -81,3 +81,24 @@ module.exports.deleteAdresse = async (req, res) => {
   }
 };
 
+module.exports.updateAdresse = async (req, res) => {
+  try {
+    const adresse = req.body;
+    const idClient = req.userId;
+    console.log(idAdresse)
+    const result = await Adresses.deleteOne({ _id: idAdresse });
+    const deleteAdress = await Adresses.findById({_id: idAdresse});
+    if (!deleteAdress) {
+      console.log("L'adresse a été supprimé avec succès.");
+    } else {
+      res.status(404).json();
+      console.log("L'adresse n'a pas été supprimé.");
+    }
+
+    const adressesAfterDelete = await Adresses.find({ userId: idClient });
+    res.status(200).json(adressesAfterDelete);
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};

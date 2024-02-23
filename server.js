@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+const {getUser} = require("./controllers/users.controller");
 const PORT = 5000;
 
 const app = express();
@@ -22,6 +23,14 @@ app.use("/api/v1/mail", require("./routes/email.routes"));
 app.use("/api/v1/codePromo", require("./routes/codePromo.routes"));
 // lancer le serveur
 app.listen(PORT, () => console.log("Le serveur à démarrer au port " + PORT));
-setInterval(() => {
-    console.log(Date.now());
-}, 2 * 60 * 1000); // 2 minutes
+
+
+/**
+ * TODO : Vérifier si cela permet de garder le serv allumé h24 sur render
+ */
+    setInterval(() => {
+        fetch('https://anneso-naturelle-api.onrender.com/api/v1/products/bracelets')
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    }, 1 * 60 * 1000);
