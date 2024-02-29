@@ -1,5 +1,6 @@
 const Adresses = require("../models/adresses.model");
 const Paniers = require("../models/panier.model");
+const UsersModel = require("../models/users.model");
 
 module.exports.getAdresses = async (req, res) => {
   try {
@@ -84,19 +85,24 @@ module.exports.deleteAdresse = async (req, res) => {
 module.exports.updateAdresse = async (req, res) => {
   try {
     const adresse = req.body;
-    const idClient = req.userId;
-    console.log(idAdresse)
-    const result = await Adresses.deleteOne({ _id: idAdresse });
-    const deleteAdress = await Adresses.findById({_id: idAdresse});
-    if (!deleteAdress) {
-      console.log("L'adresse a été supprimé avec succès.");
-    } else {
-      res.status(404).json();
-      console.log("L'adresse n'a pas été supprimé.");
-    }
+    const result = await Adresses.findOne({ _id: adresse._id });
 
-    const adressesAfterDelete = await Adresses.find({ userId: idClient });
-    res.status(200).json(adressesAfterDelete);
+    if (!result) {
+      res.status(400).json({ message: "Adresse introuvable" });
+      return;
+    }
+    result.nomPersonne = adresse.nomPersonne;
+    result.nomPersonne = adresse.nomPersonne;
+    result.adresse = adresse.adresse;
+    result.codePostal = adresse.codePostal;
+    result.ville = adresse.ville;
+    result.complementAdresse = adresse.complementAdresse;
+    result.pays = adresse.pays;
+    result.numTel = adresse.numTel;
+    const adresseAfterUpdate = result.save();
+
+    console.log(adresseAfterUpdate);
+    res.status(200).json();
   } catch (error) {
     res.status(500);
     throw new Error(error.message);

@@ -107,6 +107,7 @@ module.exports.insertProductsFromLocaleStorage = async (req, res) => {
             panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: products });
         }
         for (let product of products){
+            console.log("products : " + product)
             if (panier.contenuPanier.some(item => item.idProduct === product.idProduct)) {
                 console.log("----------------------------------Produit déjà dans le panier---------------------------------");
                 const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === product.idProduct);
@@ -120,7 +121,7 @@ module.exports.insertProductsFromLocaleStorage = async (req, res) => {
         const totalPanierClient = calculTotal(panier);
         panier.total = totalPanierClient;
         const result = await panier.save();
-        res.json({ newAmount: newAmount, contenuPanier: result.contenuPanier});
+        res.json({ newAmount: totalPanierClient, contenuPanier: result.contenuPanier});
     } catch (error) {
         console.error("Erreur lors de l'insertion des données:", error);
         res.status(500).json({ success: false, error: "Erreur serveur" });

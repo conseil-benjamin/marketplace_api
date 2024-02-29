@@ -78,9 +78,6 @@ module.exports.forgotPassword = async (req, res) => {
       throw new Error("Invalid email or password");
     }
 
-    /**
-     * TODO : envoyer un email de récupération de mot de passe avec un token valide 1h
-     **/
     const timestamp = new Date().getTime();
     console.log(timestamp)
     user.tokenResetMdp = timestamp;
@@ -90,12 +87,61 @@ module.exports.forgotPassword = async (req, res) => {
 
     const emailClient = req.body.email;
     console.log(emailClient)
+    let emailTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon Email</title>
+    <style>
+           body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1;
+            color: #333333;
+        }
+        .header {
+            background-color: #3498db;
+            padding: 20px;
+            text-align: center;
+            font-size: 30px;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+            text-align: left;
+        }
+        .footer {
+            background-color: #3498db;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+        h2, a {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Réinitialisation de votre mot de passe</h2>
+    </div>
+    <div class="content">
+        <p>Bonjour ${user.prenom},</p>
+        <p>Vous avez récemment fait une demande de réinitialisation de votre mot de passe. Vous trouverez dans cette email, un bouton vous permettant de le réinitialisez. Le lien est valide pour une durée de 1h. Après cela vous devrez refaire une demande de réinitialisation de mot de passe.</p>
+        <p>Cordialement,</p>
+        <p>L'équipe</p>
+        <a href="https://anneso-naturelle.vercel.app/auth/reset-password/${user.tokenResetMdp}" style="background-color: #4CAF50; color: white; padding: 14px 20px; text-align: center; text-decoration: none; display: inline-block;">Réinitialiser mon mot de passe</a>
+    </div>
+    <div class="footer">
+        <p>© 2024 Anne'so Naturelle. Tous droits réservés.</p>
+    </div>
+</body>
+</html>
+`;
     const mailOptions = {
       from: process.env.USER_NODE_MAILER,
       to: emailClient,
       subject: "Anne'so Naturelle | Réinitialisation de votre mot de passe",
-      html: "<img src='https://res.cloudinary.com/dc1p20eb2/image/upload/v1700322497/samples/people/jazz.jpg' width='200' height='200'><p>Vous recevez cette email car quelqu''un à utiliser votre adresse email pour réinitialiser le comte lié. Si cela vient bien de vous, vous trouverez en dessous un bouton vous permettant de réinitialiser votre mot de passe. Le lien est valide pour une durée de 1h. Après cela vous devrez refaire une demande de réinitialisation de mot de passe.</p>" +
-          `<a href="http://localhost:3000/auth/reset-password/${user.tokenResetMdp}" style="background-color: #4CAF50; color: white; padding: 14px 20px; text-align: center; text-decoration: none; display: inline-block;">Réinitialiser mon mot de passe</a>`
+      html: emailTemplate
     }
 
     transporter.sendMail(mailOptions, function (error, info) {

@@ -19,11 +19,60 @@ module.exports.clientSendEmail = async (req, res) => {
         const messageClient = emailInfos.message;
         const objetMessage = emailInfos.objetMessage;
         const nameClient = emailInfos.name;
+        let emailTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon Email</title>
+    <style>
+           body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1;
+            color: #333333;
+        }
+        .header {
+            background-color: #3498db;
+            padding: 20px;
+            text-align: center;
+            font-size: 30px;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+            text-align: left;
+            font-size: 1.25em;
+        }
+        .footer {
+            background-color: #3498db;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+        h2, a {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Demande d'information d'un client.</h2>
+    </div>
+    <div class="content">
+        <p>Message provenant de : ${nameClient}</p>
+        <p>Adresse email : ${emailClient}</p>
+        <p>Message : ${messageClient}</p>
+    </div>
+    <div class="footer">
+        <p>© 2024 Anne'so Naturelle. Tous droits réservés.</p>
+    </div>
+</body>
+</html>
+`;
         const mailOptions = {
             from: emailClient,
             to: process.env.USER_NODE_MAILER,
             subject: objetMessage,
-            html: "<p>Message provenant de : " + nameClient + "Adresse email : " + emailClient + "Message : </p>" + messageClient
+            html: emailTemplate
         }
 
         transporter.sendMail(mailOptions, function (error, info) {
