@@ -21,12 +21,12 @@ app.use("/api/v1/favoris", require("./routes/favoris.routes"));
 app.use("/api/v1/panier", require("./routes/panier.routes"));
 app.use("/api/v1/mail", require("./routes/email.routes"));
 app.use("/api/v1/codePromo", require("./routes/codePromo.routes"));
+app.use("/api/v1/images", require("./routes/images.routes"));
 // lancer le serveur
 app.listen(PORT, () => console.log("Le serveur à démarrer au port " + PORT));
 
-
-/**
- * TODO : Vérifier si cela permet de garder le serv allumé h24 sur render
+/*
+   * Permet de garder le serveur en ligne 24H/24
  */
     setInterval(() => {
         fetch('https://anneso-naturelle-api.onrender.com/api/v1/products/bracelets')
