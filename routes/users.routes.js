@@ -5,7 +5,8 @@ const {
   getUserByEmail,
   resetPassword,
   getUserPasswordClear,
-  patchUserInformations
+  patchUserInformations,
+  getUserById
 } = require("../controllers/users.controller");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -13,7 +14,8 @@ const router = express.Router();
 router.get("/", authMiddleware, getUser);
 router.post("/register", register);
 router.post("/reset-password",authMiddleware, resetPassword);
-router.get("/:email", getUserByEmail);
-router.get("/get-password-clear/:password", authMiddleware, getUserPasswordClear);
 router.patch("/patch-user-informations", authMiddleware, patchUserInformations);
+router.get("/get-password-clear/:password", authMiddleware, getUserPasswordClear);
+router.get("/:email", getUserByEmail);
+router.get("/get-user-by-id/:id", getUserById); // admin route
 module.exports = router;

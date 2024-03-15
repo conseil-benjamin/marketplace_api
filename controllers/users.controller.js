@@ -18,6 +18,23 @@ module.exports.getUser = async (req, res) => {
   }
 };
 
+module.exports.getUserById = async (req, res) => {
+  try {
+    const idClient = req.params.id;
+    const user = await UsersModel.findOne({ id: idClient });
+
+    if (!user) {
+      res.status(404).json("No user found");
+      return;
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports.register = async (req, res) => {
   try {
     let user = req.body;
@@ -122,3 +139,5 @@ module.exports.patchUserInformations = async (req, res) => {
     throw new Error(error.message);
   }
 };
+
+
