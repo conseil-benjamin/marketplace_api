@@ -54,6 +54,14 @@ const commandeSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  codePostalCommande: {
+    type: String,
+    required: true,
+  },
+  numeroSuivieChronopost: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = mongoose.model("Commandes", commandeSchema, "Commandes");

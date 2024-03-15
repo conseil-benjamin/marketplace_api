@@ -33,3 +33,38 @@ module.exports.getOneOrder = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+
+module.exports.getAllOrders = async (req, res) => {
+  try {
+    const commandes = await Commandes.find({ });
+
+    if (!commandes) {
+      res.status(400).json({ message: "Aucune commande trouvé" });
+      return;
+    }
+    console.log(commandes);
+    res.status(200).json(commandes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+module.exports.updateTrackingNumber = async (req, res) => {
+  try {
+    const commande = await Commandes.findOne({idCommande: req.body.idCommande });
+
+    if (!commande) {
+      res.status(400).json({ message: "Aucune commande trouvé" });
+      return;
+    }
+    commande.numeroSuivieMondialRelay = req.body.numeroSuivieMondialRelay;
+    commande.status = "En cours de livraison";
+    await commande.save();
+    res.status(200).json(commande);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
