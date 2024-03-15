@@ -1,10 +1,12 @@
 const Products = require("../models/products.model");
 const { validationResult } = require("express-validator");
 const sanitizeHtml = require("sanitize-html");
+const CodePromos = require("../models/codePromo.model");
 
 module.exports.getProducts = async (req, res) => {
   try {
     const products = await Products.find({});
+    console.log(products);
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -156,6 +158,22 @@ module.exports.getProductsFromOneCategory = async (req, res) => {
       return;
     }
     res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.addProduct = async (req, res) => {
+  try {
+    let produit = req.body;
+    console.log(produit);
+    const result = await Products.insertMany(produit);
+    if (!result) {
+      res.status(400).json({ message: "Insertion non réussie" });
+      return;
+    }
+
+    res.status(200).json();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
