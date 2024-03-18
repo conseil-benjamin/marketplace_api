@@ -25,7 +25,7 @@ module.exports.insertPanier = async (req, res) => {
         let newAmount = 1;
         let panier = await Paniers.findOne({ numeroClient: id });
         if (!panier) {
-            panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: produit });
+            panier = await Paniers.create({ numeroPanier: uniqueId ,numeroClient: id, contenuPanier: produit, total: produit.price });
         }  else if (panier.contenuPanier.some(item => item.idProduct === produit.idProduct)) {
             const productIndex = panier.contenuPanier.findIndex(item => item.idProduct === produit.idProduct);
             const amount = panier.contenuPanier[productIndex].amount;
