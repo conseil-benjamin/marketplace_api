@@ -22,6 +22,7 @@ app.use("/api/v1/panier", require("./routes/panier.routes"));
 app.use("/api/v1/mail", require("./routes/email.routes"));
 app.use("/api/v1/codePromo", require("./routes/codePromo.routes"));
 app.use("/api/v1/images", require("./routes/images.routes"));
+app.use("/api/v1/mondialRelay", require("./routes/mondialRelay.routes"));
 // lancer le serveur
 app.listen(PORT, () => console.log("Le serveur à démarrer au port " + PORT));
 
