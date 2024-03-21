@@ -78,7 +78,7 @@ module.exports.getBouclesOreilles = async (req, res) => {
 module.exports.getProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await Products.find({ id });
+    const product = await Products.find({ id: id });
 
     if (!product) {
       res.status(404).json({ message: error.message });
@@ -147,7 +147,7 @@ module.exports.getProductsByPierre = async (req, res) => {
 
 module.exports.getProductsFromOneCategory = async (req, res) => {
   try {
-    let category = req.body.activeCategory;
+    let category = req.params.category;
 
     const products = await Products.find({
       category: category,
@@ -174,6 +174,24 @@ module.exports.addProduct = async (req, res) => {
     }
 
     res.status(200).json();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports.get1ExampleOfEach = async (req, res) => {
+  try {
+    const boucleOreille = await Products.find({category: "boucleOreille"}).limit(1);
+    const bracelet = await Products.find({category: "bracelet"}).limit(1);
+    const encen = await Products.find({category: "bracelet"}).limit(1);
+    const accesoire = await Products.find({category: "accesoire"}).limit(1);
+
+    console.log(accesoire);
+    const result = boucleOreille + bracelet + encen + accesoire;
+    console.log(result)
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

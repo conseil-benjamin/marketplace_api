@@ -9,18 +9,19 @@ const {
   getBouclesOreilles,
   getProductsByPrix,
     getProductsByPierre,
-    getProductsFromOneCategory,addProduct
+    getProductsFromOneCategory,addProduct, get1ExampleOfEach
 } = require("../controllers/products.controller");
 const router = express.Router();
 
 router.get("/", getProducts);
+router.get("/1-example-of-each", get1ExampleOfEach)
 router.get("/bracelets", getBracelets);
 router.get("/accessoires", getAcessoires);
 router.get("/encens", getEncens);
 router.get("/boucles-oreilles", getBouclesOreilles);
 router.post("/add", addProduct);
-router.post("/category", getProductsFromOneCategory);
 router.post("/filtre-pierres", getProductsByPierre);
+router.get("/:category", getProductsFromOneCategory);
 router.get("/:id", getProduct);
 router.get(
   "/:prixMinimum/:prixMaximum/:categorie",
