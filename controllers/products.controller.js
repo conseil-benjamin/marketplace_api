@@ -78,10 +78,11 @@ module.exports.getBouclesOreilles = async (req, res) => {
 module.exports.getProduct = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id)
     const product = await Products.find({ id: id });
-
+    console.log(product);
     if (!product) {
-      res.status(404).json({ message: error.message });
+      res.status(404).json("Aucun produit avec cette id");
       return;
     }
 

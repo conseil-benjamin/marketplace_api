@@ -21,15 +21,6 @@ router.get("/encens", getEncens);
 router.get("/boucles-oreilles", getBouclesOreilles);
 router.post("/add", addProduct);
 router.post("/filtre-pierres", getProductsByPierre);
-router.get("/:category", getProductsFromOneCategory);
 router.get("/:id", getProduct);
-router.get(
-  "/:prixMinimum/:prixMaximum/:categorie",
-  [
-    check("prixMinimum").isNumeric(),
-    check("prixMaximum").isNumeric(),
-    check("categorie").isString(),
-  ],
-  getProductsByPrix
-);
+router.get("/category/:category", getProductsFromOneCategory);
 module.exports = router;
