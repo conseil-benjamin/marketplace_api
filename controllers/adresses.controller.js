@@ -23,8 +23,7 @@ module.exports.getAdresseByObjectId = async (req, res) => {
   try {
     const adresseId = req.params.adresseId;
     console.log(adresseId)
-    const adresse = await Adresses.findById({ _id: adresseId});
-
+    const adresse = await Adresses.findById(adresseId);
     if (!adresse) {
       res.status(404).json({ message: "Adresses non trouvée" });
       return;

@@ -9,7 +9,7 @@ module.exports.getPanier = async (req, res) => {
             res.status(404).json({ message: "Panier non trouvé" });
             return;
         }
-        res.status(200).json({ contenuPanier: panier.contenuPanier });
+        res.status(200).json({total: panier.total, contenuPanier: panier.contenuPanier });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erreur serveur" });
