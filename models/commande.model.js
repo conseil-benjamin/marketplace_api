@@ -15,14 +15,26 @@ const commandeSchema = mongoose.Schema({
   },
   contenuCommande: [
     {
-      produit: {
+      cover:{
         type: String,
         required: true,
       },
-      prix: {
+      price:{
         type: Number,
         required: true,
       },
+      amount:{
+        type: Number,
+        required: true,
+      },
+      name:{
+        type: String,
+        required: true,
+      },
+      idProduct:{
+        type: String,
+        required: true,
+      }
     },
   ],
   prixTotal: {

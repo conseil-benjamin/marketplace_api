@@ -1,4 +1,6 @@
 const Commandes = require("../models/commande.model");
+const bcrypt = require("bcrypt");
+const UsersModel = require("../models/users.model");
 
 module.exports.getCommandes = async (req, res) => {
   try {
@@ -66,5 +68,18 @@ module.exports.updateTrackingNumber = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+module.exports.addOrder = async (req, res) => {
+  try {
+    let commande = req.body;
+    console.log(commande)
+    const result = await Commandes.insertMany(commande);
+
+    res.json({ success: true, insertedCount: result.insertedCount});
+  } catch (error) {
+    console.error("Erreur lors de l'insertion des données:", error);
+    res.status(500).json({ success: false, error: "Erreur serveur" });
   }
 };
