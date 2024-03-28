@@ -33,6 +33,10 @@ const productSchema = mongoose.Schema({
     type: [String],
     default: [],
   },
+  idPrixStripe: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Produits", productSchema, "Produits");

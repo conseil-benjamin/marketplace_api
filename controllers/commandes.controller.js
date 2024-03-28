@@ -74,6 +74,8 @@ module.exports.updateTrackingNumber = async (req, res) => {
 module.exports.addOrder = async (req, res) => {
   try {
     let commande = req.body;
+    const idClient = req.userId;
+    commande.idClient = idClient;
     console.log(commande)
     const result = await Commandes.insertMany(commande);
 

@@ -34,6 +34,10 @@ const commandeSchema = mongoose.Schema({
       idProduct:{
         type: String,
         required: true,
+      },
+      idPrixStripe: {
+        type: String,
+        required: true,
       }
     },
   ],
