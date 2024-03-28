@@ -67,6 +67,26 @@ module.exports.deleteProductFromPanier = async (req, res) => {
     }
 };
 
+module.exports.deleteProductsFromPanier = async (req, res) => {
+    try {
+        const idClient = req.userId;
+        let panier = await Paniers.findOne({ numeroClient: idClient });
+
+        if (!panier) {
+            res.status(404).json("Aucun panier appartenant à ce compte.");
+            return;
+        }
+        panier.contenuPanier = [];
+
+        const totalPanierClient = calculTotal(panier);
+        panier.total = totalPanierClient;
+        panier = await panier.save();
+        res.status(200).json({ contenuPanier: panier.contenuPanier });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
 
 module.exports.updatePanier = async (req, res) => {
     try {

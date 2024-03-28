@@ -38,7 +38,11 @@ const clientSchema = mongoose.Schema({
   validiteTokenResetMdp:{
     type: Date,
     required: false,
-  }
+  },
+  tokenStripe: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = mongoose.model("Users", clientSchema, "Users");

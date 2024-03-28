@@ -31,6 +31,10 @@ const panierSchema = mongoose.Schema({
             idProduct:{
                 type: String,
                 required: true,
+            },
+            idPrixStripe: {
+                type: String,
+                required: true,
             }
         }
     ],

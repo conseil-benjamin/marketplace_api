@@ -91,7 +91,12 @@ module.exports.clientSendEmail = async (req, res) => {
 
 module.exports.emailConfirmation = async (req, res) => {
     try {
+        const products = req.body.products;
+        const adresse = req.body.adresse;
+        const total = req.body.total;
         const emailInfos = req.body.emailInfos;
+        const emailClient = emailInfos.email;
+        const objetMessage = "Confirmation de commande - Anne'so Naturelle";
         let emailTemplate = `
 <!DOCTYPE html>
 <html>
@@ -124,16 +129,38 @@ module.exports.emailConfirmation = async (req, res) => {
         h2, a {
             color: #2c3e50;
         }
+        .div-main-adresse > p{
+            margin: 0;
+        }
+        .div-codePostal-ville{
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2>Demande d'information d'un client.</h2>
+        <h2>Confirmation de commande</h2>
     </div>
     <div class="content">
-        <p>Message provenant de : ${nameClient}</p>
-        <p>Adresse email : ${emailClient}</p>
-        <p>Message : ${messageClient}</p>
+        <p>Votre commande a bien été enregistrée.</p>
+        <p>Voici le récapitulatif de votre commande :</p>
+        <ul>
+            ${products.map(product => `<li>${product.name} x ${product.amount}</li>`).join('')}
+        </ul>
+        <p>Montant total : ${total} €</p>
+        <h4>Votre adresse de livraison :</h4>
+        <div class="div-main-adresse">
+        <p>${adresse[4]}</p>
+         <div class="div-codePostal-ville">
+           <p>${adresse[5]}</p>
+           <p>${adresse[6]}</p>
+        </div>
+        <p>${adresse[8]}</p>
+        <p>${adresse[9]}</p>
+        </div>
+        <p>Vous recevrez un email de confirmation dès que votre commande sera expédiée.</p>
     </div>
     <div class="footer">
         <p>© 2024 Anne'so Naturelle. Tous droits réservés.</p>
@@ -142,8 +169,8 @@ module.exports.emailConfirmation = async (req, res) => {
 </html>
 `;
         const mailOptions = {
-            from: emailClient,
-            to: process.env.USER_NODE_MAILER,
+            from: process.env.USER_NODE_MAILER,
+            to: emailClient,
             subject: objetMessage,
             html: emailTemplate
         }

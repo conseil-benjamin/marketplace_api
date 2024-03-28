@@ -7,5 +7,4 @@ const router = express.Router();
 
 router.post("/client-to-seller", clientSendEmail);
 router.post("/seller-to-client", emailConfirmation)
-
 module.exports = router;
